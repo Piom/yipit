@@ -81,8 +81,10 @@ module Yipit
 
     def method_missing(sym, *args, &block)
       options = args.extract_options!.merge(:key => api_key, :limit => 5000)
-      puts options
-      response = conn.get("/v1/#{sym.to_s}/#{args[0]}") { |req| req.params = options  }
+      response = conn.get("/v1/#{sym.to_s}/#{args[0]}") do |req| 
+        req.params = options  
+        puts req.options
+      end
       puts response
       ret = response.body['response']["#{sym.to_s}"]
       mashes = ret.map{|h| Hashie::Mash.new(h)}
