@@ -83,6 +83,8 @@ module Yipit
       options = args.extract_options!.merge(:key => api_key, :limit => 5000)
       response = conn.get("/v1/#{sym.to_s}/#{args[0]}") do |req| 
         req.params = options  
+        req.options[:timeout] = 120           # open/read timeout in seconds
+        req.options[:open_timeout] = 120 
         puts req.options
       end
       puts response
