@@ -12,7 +12,7 @@ module Yipit
     def initialize(*args)
       options = args.extract_options!
       @api_key = args[0]
-      @conn = Faraday.new(:url => "http://api.yipit.com", options) do |builder|
+      @conn = Faraday.new(:url => "http://api.yipit.com") do |builder|
         builder.adapter Faraday.default_adapter
         builder.adapter  :logger if options[:debug] == true
         builder.use Faraday::Response::ParseJson
