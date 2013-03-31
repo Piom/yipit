@@ -12,7 +12,7 @@ module Yipit
     def initialize(*args)
       options = args.extract_options!
       @api_key = args[0]
-      @conn = Faraday.new(:url => "http://api.yipit.com") do |builder|
+      @conn = Faraday.new(:url => "http://api.yipit.com", options) do |builder|
         builder.adapter Faraday.default_adapter
         builder.adapter  :logger if options[:debug] == true
         builder.use Faraday::Response::ParseJson
@@ -81,6 +81,7 @@ module Yipit
 
     def method_missing(sym, *args, &block)
       options = args.extract_options!.merge(:key => api_key, :limit => 5000)
+      puts options
       response = conn.get("/v1/#{sym.to_s}/#{args[0]}") { |req| req.params = options  }
       puts response
       ret = response.body['response']["#{sym.to_s}"]
